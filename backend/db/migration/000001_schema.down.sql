@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS expenditure;
+DROP TABLE IF EXISTS expenditureCategory;
+DROP TABLE IF EXISTS profile;
+DROP EXTENSION IF EXISTS "uuid-ossp";
