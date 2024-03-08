@@ -9,6 +9,7 @@ postgresup:
 
 postgresdown:
 	docker stop money-tracker-postgres
+	docker rm money-tracker-postgres
 
 createdb:
 	docker exec -it money-tracker-postgres createdb --username=postgres --owner=postgres money-tracker
@@ -28,15 +29,16 @@ tidy:
 test: tidy
 	go test -v -cover ./...
 
-delete_old_image:
-	docker image rm papaya147/money-tracker-backend || true
+run: postgresup createdb migrateup test
+	trap 'make postgresdown' INT; go run main.go
 
 build: delete_old_image postgresup createdb migrateup test
+	@echo "Deleting the old image..."
+	docker image rm papaya147/money-tracker-backend || true
 	@echo "Building the backend Docker image..."
 	env GOOS=linux CGO_ENABLED=0 go build -o server-app main.go
 	docker build -t papaya147/money-tracker-backend:latest .
 	@echo "Cleaning up..."
 	make postgresdown
-	docker rm money-tracker-postgres
 
 .PHONY: test

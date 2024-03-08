@@ -34,7 +34,7 @@ func CreateDatabase(conn *pgxpool.Pool) {
 		query := `CREATE DATABASE "money-tracker";`
 		_, err := conn.Exec(context.Background(), query)
 		if err != nil {
-			if e := err.(*pgconn.PgError); e.Code == "42P04" {
+			if e, ok := err.(*pgconn.PgError); ok && e.Code == "42P04" {
 				fmt.Println("database already exists...")
 				return
 			}
