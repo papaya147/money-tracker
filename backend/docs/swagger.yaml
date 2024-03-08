@@ -100,6 +100,33 @@ info:
   version: "1.0"
 paths:
   /expenditure:
+    get:
+      description: Get all expenditures, this API will return an error if the offset
+        is empty.
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/expenditure.expenditureOutput'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+      summary: Get all expenditures, 20 at a time
+      tags:
+      - expenditure
     post:
       description: Create a new expenditure, this API will return an error if the
         category is not found.
@@ -127,6 +154,31 @@ paths:
       tags:
       - expenditure
   /expenditure/{expenditure-id}:
+    delete:
+      description: Delete an expenditure, this API will return an error if the expenditure
+        is not found.
+      parameters:
+      - description: Expenditure Id
+        in: path
+        name: expenditure-id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/expenditure.expenditureOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+      summary: Delete an expenditure
+      tags:
+      - expenditure
     put:
       description: Update an expenditure, this API will return an error if the category
         is not found.

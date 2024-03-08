@@ -13,6 +13,14 @@ type updateExpenditureInput struct {
 	Category string `json:"category" example:"electronics"`
 }
 
+type deleteExpenditureInput struct {
+	Id string `json:"-" validate:"required,uuid"`
+}
+
+type getExpendituresInput struct {
+	Page string `json:"-" validate:"required,int"`
+}
+
 type expenditureOutput struct {
 	Id        uuid.UUID `json:"id" example:"6ba7b814-9dad-11d1-80b4-00c04fd430c8"`
 	Paisa     int32     `json:"paisa" example:"123400"`

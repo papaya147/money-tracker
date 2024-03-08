@@ -16,6 +16,45 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/expenditure": {
+            "get": {
+                "description": "Get all expenditures, this API will return an error if the offset is empty.",
+                "tags": [
+                    "expenditure"
+                ],
+                "summary": "Get all expenditures, 20 at a time",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/expenditure.expenditureOutput"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Create a new expenditure, this API will return an error if the category is not found.",
                 "tags": [
@@ -276,6 +315,42 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/expenditure.updateExpenditureInput"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/expenditure.expenditureOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an expenditure, this API will return an error if the expenditure is not found.",
+                "tags": [
+                    "expenditure"
+                ],
+                "summary": "Delete an expenditure",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Expenditure Id",
+                        "name": "expenditure-id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
