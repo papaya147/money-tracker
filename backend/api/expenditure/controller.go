@@ -30,6 +30,7 @@ func (c *Controller) Routes() *chi.Mux {
 
 	router.Mount("/category", c.categoryController.Routes())
 	router.Post("/", c.create)
+	router.Put("/{expenditure-id}", c.update)
 
 	return router
 }

@@ -246,6 +246,53 @@
                     }
                 }
             }
+        },
+        "/expenditure/{expenditure-id}": {
+            "put": {
+                "description": "Update an expenditure, this API will return an error if the category is not found.",
+                "tags": [
+                    "expenditure"
+                ],
+                "summary": "Update an expenditure",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Expenditure Id",
+                        "name": "expenditure-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "json",
+                        "name": "request-body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/expenditure.updateExpenditureInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/expenditure.expenditureOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -351,6 +398,19 @@
                 "updated_at": {
                     "type": "integer",
                     "example": 1709885754000
+                }
+            }
+        },
+        "expenditure.updateExpenditureInput": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "example": "electronics"
+                },
+                "paisa": {
+                    "type": "integer",
+                    "example": 561000
                 }
             }
         },

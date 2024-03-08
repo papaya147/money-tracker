@@ -17,7 +17,8 @@ func TestCase(t *testing.T, method, route string, handler http.HandlerFunc, body
 	rr := httptest.NewRecorder()
 
 	req = addChiURLParams(req, map[string]string{
-		"category-name": util.RandomString(20),
+		"category-name":  util.RandomString(20),
+		"expenditure-id": util.RandomUuid().String(),
 	})
 
 	for _, header := range headers {

@@ -7,6 +7,12 @@ type createExpenditureInput struct {
 	Category string `json:"category" validate:"required,max=32" example:"electronics"`
 }
 
+type updateExpenditureInput struct {
+	Id       string `json:"-" validate:"required,uuid"`
+	Paisa    int32  `json:"paisa" example:"561000"`
+	Category string `json:"category" example:"electronics"`
+}
+
 type expenditureOutput struct {
 	Id        uuid.UUID `json:"id" example:"6ba7b814-9dad-11d1-80b4-00c04fd430c8"`
 	Paisa     int32     `json:"paisa" example:"123400"`
