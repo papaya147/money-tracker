@@ -1,0 +1,66 @@
+basePath: /api/v1
+definitions:
+  category.categoryOutput:
+    properties:
+      category:
+        type: string
+      created_at:
+        type: integer
+      updated_at:
+        type: integer
+    type: object
+  category.createCategoryInput:
+    properties:
+      name:
+        maxLength: 15
+        type: string
+    required:
+    - name
+    type: object
+  util.JsonResponse:
+    properties:
+      data: {}
+      error:
+        type: boolean
+      message:
+        type: string
+    type: object
+host: localhost:4000
+info:
+  contact: {}
+  description: The comprehensive list of all Money Tracker APIs
+  title: Money Tracker APIs
+  version: "1.0"
+paths:
+  /expenditure/category:
+    post:
+      description: Create a new expenditure category, this API will throw an error
+        if the category has already been created.
+      parameters:
+      - description: json
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/category.createCategoryInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/category.categoryOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.JsonResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/util.JsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.JsonResponse'
+      summary: Create a new expenditure category
+      tags:
+      - expenditure
+swagger: "2.0"
