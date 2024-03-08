@@ -3,27 +3,32 @@ definitions:
   category.categoryOutput:
     properties:
       category:
+        example: electronics
         type: string
       created_at:
+        example: 1709885754000
         type: integer
       updated_at:
+        example: 1709885754000
         type: integer
     type: object
   category.createCategoryInput:
     properties:
       name:
-        maxLength: 15
+        example: electronics
+        maxLength: 32
         type: string
     required:
     - name
     type: object
-  util.JsonResponse:
+  util.ErrorModel:
     properties:
-      data: {}
-      error:
-        type: boolean
       message:
+        example: something went wrong
         type: string
+      status:
+        example: 400
+        type: integer
     type: object
 host: localhost:4000
 info:
@@ -51,15 +56,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/util.JsonResponse'
-        "401":
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/util.JsonResponse'
+            $ref: '#/definitions/util.ErrorModel'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/util.JsonResponse'
+            $ref: '#/definitions/util.ErrorModel'
       summary: Create a new expenditure category
       tags:
       - expenditure

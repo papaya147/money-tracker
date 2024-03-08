@@ -8,12 +8,6 @@ import (
 	"net/http"
 )
 
-type JsonResponse struct {
-	Error   bool   `json:"error"`
-	Message string `json:"message"`
-	Data    any    `json:"data,omitempty"`
-}
-
 // ReadJsonAndValidate reads JSON from the request body and validates it.
 func ReadJsonAndValidate(w http.ResponseWriter, r *http.Request, data any) error {
 	if err := readJsonFromBody(w, r, data); err != nil {
@@ -62,6 +56,11 @@ func RebuildRequestBody(r *http.Request, data any) error {
 	return nil
 }
 
+type ErrorModel struct {
+	Message string `json:"message" example:"something went wrong"`
+	Status  int    `json:"status" example:"400"`
+}
+
 // WriteJson returns a JSON response.
 func WriteJson(w http.ResponseWriter, status int, data any, headers ...http.Header) {
 	out, err := json.Marshal(data)
@@ -85,14 +84,16 @@ func WriteJson(w http.ResponseWriter, status int, data any, headers ...http.Head
 
 // ErrorJson returns an error in JSON format.
 func ErrorJson(w http.ResponseWriter, err error) {
-	var payload JsonResponse
-	payload.Error = true
+	var payload ErrorModel
 	payload.Message = err.Error()
+	payload.Status = http.StatusBadRequest
 
 	statusCode, exists := CustomErrorType[err]
 	if exists {
+		payload.Status = statusCode
 		WriteJson(w, statusCode, payload)
 		return
 	}
+
 	WriteJson(w, http.StatusBadRequest, payload)
 }

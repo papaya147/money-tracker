@@ -43,19 +43,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/util.JsonResponse"
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "schema": {
-                            "$ref": "#/definitions/util.JsonResponse"
+                            "$ref": "#/definitions/util.ErrorModel"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/util.JsonResponse"
+                            "$ref": "#/definitions/util.ErrorModel"
                         }
                     }
                 }
@@ -67,13 +61,16 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "category": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "electronics"
                 },
                 "created_at": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1709885754000
                 },
                 "updated_at": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1709885754000
                 }
             }
         },
@@ -85,19 +82,21 @@ const docTemplate = `{
             "properties": {
                 "name": {
                     "type": "string",
-                    "maxLength": 15
+                    "maxLength": 32,
+                    "example": "electronics"
                 }
             }
         },
-        "util.JsonResponse": {
+        "util.ErrorModel": {
             "type": "object",
             "properties": {
-                "data": {},
-                "error": {
-                    "type": "boolean"
-                },
                 "message": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "something went wrong"
+                },
+                "status": {
+                    "type": "integer",
+                    "example": 400
                 }
             }
         }

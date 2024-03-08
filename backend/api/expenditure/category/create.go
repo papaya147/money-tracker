@@ -11,11 +11,10 @@ import (
 // @Summary      Create a new expenditure category
 // @Description  Create a new expenditure category, this API will throw an error if the category has already been created.
 // @Tags         expenditure
-// @Param input body createCategoryInput true "json"
+// @Param        input body createCategoryInput true "json"
 // @Success      200  {object} categoryOutput
-// @Failure      400  {object} util.JsonResponse
-// @Failure      401  {object} util.JsonResponse
-// @Failure      500  {object} util.JsonResponse
+// @Failure      400  {object} util.ErrorModel
+// @Failure      500  {object} util.ErrorModel
 // @Router       /expenditure/category [post]
 func (c *Controller) create(w http.ResponseWriter, r *http.Request) {
 	var requestPayload createCategoryInput
