@@ -30,6 +30,37 @@ definitions:
     required:
     - new_name
     type: object
+  expenditure.createExpenditureInput:
+    properties:
+      category:
+        example: electronics
+        maxLength: 32
+        type: string
+      paisa:
+        example: 561000
+        type: integer
+    required:
+    - category
+    - paisa
+    type: object
+  expenditure.expenditureOutput:
+    properties:
+      category:
+        example: electronics
+        type: string
+      created_at:
+        example: 1709885754000
+        type: integer
+      id:
+        example: 6ba7b814-9dad-11d1-80b4-00c04fd430c8
+        type: string
+      paisa:
+        example: 123400
+        type: integer
+      updated_at:
+        example: 1709885754000
+        type: integer
+    type: object
   util.ErrorModel:
     properties:
       message:
@@ -46,6 +77,33 @@ info:
   title: Money Tracker APIs
   version: "1.0"
 paths:
+  /expenditure:
+    post:
+      description: Create a new expenditure, this API will return an error if the
+        category is not found.
+      parameters:
+      - description: json
+        in: body
+        name: request-body
+        required: true
+        schema:
+          $ref: '#/definitions/expenditure.createExpenditureInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/expenditure.expenditureOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+      summary: Create a new expenditure
+      tags:
+      - expenditure
   /expenditure/category:
     get:
       description: Get all expenditure categories, this API will return an error if

@@ -29,6 +29,7 @@ func (c *Controller) Routes() *chi.Mux {
 	router := chi.NewMux()
 
 	router.Mount("/category", c.categoryController.Routes())
+	router.Post("/", c.create)
 
 	return router
 }

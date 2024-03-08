@@ -9,6 +9,46 @@
     "host": "localhost:4000",
     "basePath": "/api/v1",
     "paths": {
+        "/expenditure": {
+            "post": {
+                "description": "Create a new expenditure, this API will return an error if the category is not found.",
+                "tags": [
+                    "expenditure"
+                ],
+                "summary": "Create a new expenditure",
+                "parameters": [
+                    {
+                        "description": "json",
+                        "name": "request-body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/expenditure.createExpenditureInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/expenditure.expenditureOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
         "/expenditure/category": {
             "get": {
                 "description": "Get all expenditure categories, this API will return an error if none have been created.",
@@ -206,6 +246,49 @@
                     "type": "string",
                     "maxLength": 32,
                     "example": "electronics"
+                }
+            }
+        },
+        "expenditure.createExpenditureInput": {
+            "type": "object",
+            "required": [
+                "category",
+                "paisa"
+            ],
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "maxLength": 32,
+                    "example": "electronics"
+                },
+                "paisa": {
+                    "type": "integer",
+                    "example": 561000
+                }
+            }
+        },
+        "expenditure.expenditureOutput": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string",
+                    "example": "electronics"
+                },
+                "created_at": {
+                    "type": "integer",
+                    "example": 1709885754000
+                },
+                "id": {
+                    "type": "string",
+                    "example": "6ba7b814-9dad-11d1-80b4-00c04fd430c8"
+                },
+                "paisa": {
+                    "type": "integer",
+                    "example": 123400
+                },
+                "updated_at": {
+                    "type": "integer",
+                    "example": 1709885754000
                 }
             }
         },

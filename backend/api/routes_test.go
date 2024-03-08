@@ -13,6 +13,9 @@ func TestRoutes(t *testing.T) {
 
 	apiRoutes := []test.Route{
 		{Path: "/swagger/*", Method: http.MethodGet},
+
+		{Path: "/expenditure/", Method: http.MethodPost},
+
 		{Path: "/expenditure/category/", Method: http.MethodPost},
 		{Path: "/expenditure/category/", Method: http.MethodGet},
 		{Path: "/expenditure/category/{category-name}", Method: http.MethodPut},
