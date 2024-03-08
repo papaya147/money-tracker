@@ -13,7 +13,7 @@ import (
 // @Summary      Get all expenditures, 20 at a time
 // @Description  Get all expenditures, this API will return an error if the offset is empty.
 // @Tags         expenditure
-// @Param        page query int true "Page" int
+// @Param        page query int true "page" int
 // @Success      200  {object} []expenditureOutput
 // @Failure      400  {object} util.ErrorModel
 // @Failure      500  {object} util.ErrorModel

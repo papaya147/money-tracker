@@ -1,9 +1,9 @@
 package util
 
 import (
-	"log"
+	"os"
 
-	"github.com/spf13/viper"
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -12,20 +12,10 @@ type Config struct {
 }
 
 func LoadEnv(path string) *Config {
-	viper.AddConfigPath(path)
-	viper.SetConfigName("app")
-	viper.SetConfigType("env")
+	godotenv.Load(path + ".env")
 
-	viper.AutomaticEnv()
-
-	if err := viper.ReadInConfig(); err != nil {
-		log.Println("error loading env vars:", err)
+	return &Config{
+		POSTGRES_DSN: os.Getenv("POSTGRES_DSN"),
+		PORT:         os.Getenv("PORT"),
 	}
-
-	var config Config
-	if err := viper.Unmarshal(&config); err != nil {
-		log.Panic("error unmarshalling config:", err)
-	}
-
-	return &config
 }

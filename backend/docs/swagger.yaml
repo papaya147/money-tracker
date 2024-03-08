@@ -104,7 +104,7 @@ paths:
       description: Get all expenditures, this API will return an error if the offset
         is empty.
       parameters:
-      - description: Page
+      - description: page
         in: query
         name: page
         required: true

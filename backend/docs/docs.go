@@ -25,7 +25,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "Page",
+                        "description": "page",
                         "name": "page",
                         "in": "query",
                         "required": true

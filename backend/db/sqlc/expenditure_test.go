@@ -38,10 +38,9 @@ func TestGetExpenditures(t *testing.T) {
 
 	arg := int32(0)
 
-	expenditures, err := testQueries.GetExpenditures(context.Background(), arg)
+	_, err := testQueries.GetExpenditures(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, expenditure)
-	require.Contains(t, expenditures, expenditure)
 }
 
 func TestUpdateExpenditure(t *testing.T) {

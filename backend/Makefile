@@ -19,7 +19,11 @@ migratedown:
 tidy:
 	go mod tidy
 
-test:
+test: tidy
 	go test -v -cover ./...
+
+build: test
+	env GOOS=linux CGO_ENABLED=0 go build -o server-app main.go
+	docker build -t papaya147/money-tracker-backend .
 
 .PHONY: test
