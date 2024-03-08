@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  postgres:
+    image: "postgres:latest"
+    ports:
+      - 5432:5432
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: money-tracker
+    volumes:
+      - ./postgres/:/var/lib/postgresql/data/
+
+  backend:
+    image: "papaya147/money-tracker-backend"
+    restart: always
+    ports:
+      - 4000:4000
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_DSN: postgresql://postgres:password@postgres:5432/money-tracker?sslmode=disable
+      PORT: 4000
+      MIGRATION_URL: file:///app/db/migration
