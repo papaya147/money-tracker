@@ -4,6 +4,10 @@ type createCategoryInput struct {
 	Name string `json:"name" validate:"required,max=32" example:"electronics"`
 }
 
+type createBulkCategoryInput struct {
+	Categories []string `json:"categories" validate:"required,dive,max=32" example:"electronics,furniture,school"`
+}
+
 type updateCategoryInput struct {
 	OldName string `json:"-" validate:"required,max=32"`
 	NewName string `json:"new_name" validate:"required,max=32" example:"electronics"`

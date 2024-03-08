@@ -24,6 +24,7 @@ func (c *Controller) Routes() *chi.Mux {
 	router := chi.NewMux()
 
 	router.Post("/", c.create)
+	router.Post("/bulk", c.createBulk)
 	router.Get("/", c.get)
 	router.Put("/{category-name}", c.update)
 	router.Delete("/{category-name}", c.delete)

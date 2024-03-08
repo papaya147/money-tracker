@@ -119,6 +119,49 @@
                 }
             }
         },
+        "/expenditure/category/bulk": {
+            "post": {
+                "description": "Create a bulk of new expenditure categories, this API will return an error if any category already exists.",
+                "tags": [
+                    "expenditure category"
+                ],
+                "summary": "Create a bulk of new expenditure categories",
+                "parameters": [
+                    {
+                        "description": "json",
+                        "name": "request-body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/category.createBulkCategoryInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/category.categoryOutput"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
         "/expenditure/category/{category-name}": {
             "put": {
                 "description": "Update an expenditure category's name, this API will return an error if the category does not exist.",
@@ -220,6 +263,25 @@
                 "updated_at": {
                     "type": "integer",
                     "example": 1709885754000
+                }
+            }
+        },
+        "category.createBulkCategoryInput": {
+            "type": "object",
+            "required": [
+                "categories"
+            ],
+            "properties": {
+                "categories": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "electronics",
+                        "furniture",
+                        "school"
+                    ]
                 }
             }
         },
