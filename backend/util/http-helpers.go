@@ -10,7 +10,7 @@ import (
 
 // ReadJsonAndValidate reads JSON from the request body and validates it.
 func ReadJsonAndValidate(w http.ResponseWriter, r *http.Request, data any) error {
-	if err := readJsonFromBody(w, r, data); err != nil {
+	if err := ReadJson(w, r, data); err != nil {
 		return err
 	}
 
@@ -22,7 +22,7 @@ func ReadJsonAndValidate(w http.ResponseWriter, r *http.Request, data any) error
 }
 
 // readJsonFromBody reads JSON from the request body
-func readJsonFromBody(w http.ResponseWriter, r *http.Request, data any) error {
+func ReadJson(w http.ResponseWriter, r *http.Request, data any) error {
 	// TODO - revert to 1 MB
 	maxBytes := 10 << 20 // one megabyte
 

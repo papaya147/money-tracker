@@ -19,7 +19,7 @@ const docTemplate = `{
             "get": {
                 "description": "Get all expenditure categories, this API will return an error if none have been created.",
                 "tags": [
-                    "expenditure"
+                    "expenditure category"
                 ],
                 "summary": "Get all expenditure categories",
                 "responses": {
@@ -49,18 +49,103 @@ const docTemplate = `{
             "post": {
                 "description": "Create a new expenditure category, this API will return an error if the category has already been created.",
                 "tags": [
-                    "expenditure"
+                    "expenditure category"
                 ],
                 "summary": "Create a new expenditure category",
                 "parameters": [
                     {
                         "description": "json",
-                        "name": "input",
+                        "name": "request-body",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/category.createCategoryInput"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/category.categoryOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/expenditure/category/{category-name}": {
+            "put": {
+                "description": "Update an expenditure category's name, this API will return an error if the category does not exist.",
+                "tags": [
+                    "expenditure category"
+                ],
+                "summary": "Update an expenditure category's name",
+                "parameters": [
+                    {
+                        "maxLength": 32,
+                        "type": "string",
+                        "description": "Category Name",
+                        "name": "category-name",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "json",
+                        "name": "request-body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/category.updateCategoryInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/category.categoryOutput"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/util.ErrorModel"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete an expenditure category's, this API will return an error if the category does not exist.",
+                "tags": [
+                    "expenditure category"
+                ],
+                "summary": "Delete an expenditure category's",
+                "parameters": [
+                    {
+                        "maxLength": 32,
+                        "type": "string",
+                        "description": "Category Name",
+                        "name": "category-name",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -111,6 +196,19 @@ const docTemplate = `{
             ],
             "properties": {
                 "name": {
+                    "type": "string",
+                    "maxLength": 32,
+                    "example": "electronics"
+                }
+            }
+        },
+        "category.updateCategoryInput": {
+            "type": "object",
+            "required": [
+                "new_name"
+            ],
+            "properties": {
+                "new_name": {
                     "type": "string",
                     "maxLength": 32,
                     "example": "electronics"

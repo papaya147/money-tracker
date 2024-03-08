@@ -10,8 +10,8 @@ import (
 // create godoc
 // @Summary      Create a new expenditure category
 // @Description  Create a new expenditure category, this API will return an error if the category has already been created.
-// @Tags         expenditure
-// @Param        input body createCategoryInput true "json"
+// @Tags         expenditure category
+// @Param        request-body body createCategoryInput true "json"
 // @Success      200  {object} categoryOutput
 // @Failure      400  {object} util.ErrorModel
 // @Failure      500  {object} util.ErrorModel

@@ -11,7 +11,7 @@ import (
 // create godoc
 // @Summary      Get all expenditure categories
 // @Description  Get all expenditure categories, this API will return an error if none have been created.
-// @Tags         expenditure
+// @Tags         expenditure category
 // @Success      200  {object} []string
 // @Failure      400  {object} util.ErrorModel
 // @Failure      500  {object} util.ErrorModel

@@ -21,6 +21,15 @@ definitions:
     required:
     - name
     type: object
+  category.updateCategoryInput:
+    properties:
+      new_name:
+        example: electronics
+        maxLength: 32
+        type: string
+    required:
+    - new_name
+    type: object
   util.ErrorModel:
     properties:
       message:
@@ -58,14 +67,14 @@ paths:
             $ref: '#/definitions/util.ErrorModel'
       summary: Get all expenditure categories
       tags:
-      - expenditure
+      - expenditure category
     post:
       description: Create a new expenditure category, this API will return an error
         if the category has already been created.
       parameters:
       - description: json
         in: body
-        name: input
+        name: request-body
         required: true
         schema:
           $ref: '#/definitions/category.createCategoryInput'
@@ -84,5 +93,64 @@ paths:
             $ref: '#/definitions/util.ErrorModel'
       summary: Create a new expenditure category
       tags:
-      - expenditure
+      - expenditure category
+  /expenditure/category/{category-name}:
+    delete:
+      description: Delete an expenditure category's, this API will return an error
+        if the category does not exist.
+      parameters:
+      - description: Category Name
+        in: path
+        maxLength: 32
+        name: category-name
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/category.categoryOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+      summary: Delete an expenditure category's
+      tags:
+      - expenditure category
+    put:
+      description: Update an expenditure category's name, this API will return an
+        error if the category does not exist.
+      parameters:
+      - description: Category Name
+        in: path
+        maxLength: 32
+        name: category-name
+        required: true
+        type: string
+      - description: json
+        in: body
+        name: request-body
+        required: true
+        schema:
+          $ref: '#/definitions/category.updateCategoryInput'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/category.categoryOutput'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/util.ErrorModel'
+      summary: Update an expenditure category's name
+      tags:
+      - expenditure category
 swagger: "2.0"
