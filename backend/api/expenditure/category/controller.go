@@ -24,6 +24,7 @@ func (c *Controller) Routes() *chi.Mux {
 	router := chi.NewMux()
 
 	router.Post("/", c.create)
+	router.Get("/", c.get)
 
 	return router
 }

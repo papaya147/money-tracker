@@ -15,17 +15,22 @@ func (m Method) String() string {
 	return string(m)
 }
 
-func RouteExists(t *testing.T, routes chi.Router, apiVersion int, path Path, method Method) {
+type Route struct {
+	Path   Path
+	Method Method
+}
+
+func RouteExists(t *testing.T, routes chi.Router, apiVersion int, route Route) {
 	found := false
 
 	_ = chi.Walk(routes, func(foundMethod string, foundRoute string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {
-		if fmt.Sprintf("/api/v%d%s", apiVersion, path) == foundRoute && method.String() == foundMethod {
+		if fmt.Sprintf("/api/v%d%s", apiVersion, route.Path) == foundRoute && route.Method.String() == foundMethod {
 			found = true
 		}
 		return nil
 	})
 
 	if !found {
-		t.Errorf("did not find /api/v%d%s with method %s in registered routes", apiVersion, path, method)
+		t.Errorf("did not find /api/v%d%s with method %s in registered routes", apiVersion, route.Path, route.Method)
 	}
 }

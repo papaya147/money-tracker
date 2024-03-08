@@ -11,12 +11,13 @@ func TestRoutes(t *testing.T) {
 	router := testApp.router
 	apiVersion := 1
 
-	apiRoutes := map[test.Path]test.Method{
-		"/swagger/*":             http.MethodGet,
-		"/expenditure/category/": http.MethodPost,
+	apiRoutes := []test.Route{
+		{Path: "/swagger/*", Method: http.MethodGet},
+		{Path: "/expenditure/category/", Method: http.MethodPost},
+		{Path: "/expenditure/category/", Method: http.MethodGet},
 	}
 
-	for route, method := range apiRoutes {
-		test.RouteExists(t, router, apiVersion, route, method)
+	for _, route := range apiRoutes {
+		test.RouteExists(t, router, apiVersion, route)
 	}
 }

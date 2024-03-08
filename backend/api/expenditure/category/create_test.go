@@ -14,5 +14,5 @@ func TestCreate(t *testing.T) {
 		"name": util.RandomString(10),
 	}
 	body, _ := json.Marshal(postBody)
-	test.TestCase(t, http.MethodGet, "/", testHandler.create, body, http.StatusOK)
+	test.TestCase(t, http.MethodPost, "/", testHandler.create, body, http.StatusOK)
 }

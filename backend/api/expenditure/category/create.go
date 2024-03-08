@@ -9,7 +9,7 @@ import (
 
 // create godoc
 // @Summary      Create a new expenditure category
-// @Description  Create a new expenditure category, this API will throw an error if the category has already been created.
+// @Description  Create a new expenditure category, this API will return an error if the category has already been created.
 // @Tags         expenditure
 // @Param        input body createCategoryInput true "json"
 // @Success      200  {object} categoryOutput
@@ -23,8 +23,8 @@ func (c *Controller) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dbArg := requestPayload.Name
-	category, err := c.store.CreateExpenditureCategory(r.Context(), dbArg)
+	queryArg := requestPayload.Name
+	category, err := c.store.CreateExpenditureCategory(r.Context(), queryArg)
 	if err != nil {
 		if db.ErrorCode(err) == db.UniqueViolation {
 			util.ErrorJson(w, util.ErrDuplicateEntry)
