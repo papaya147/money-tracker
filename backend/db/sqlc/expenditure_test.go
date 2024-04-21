@@ -67,3 +67,18 @@ func TestUpdateExpenditure(t *testing.T) {
 func TestDeleteExpenditure(t *testing.T) {
 
 }
+
+func TestGetExpenditureById(t *testing.T) {
+	expenditure1 := createRandomExpenditure(t)
+
+	arg := expenditure1.ID
+
+	expenditure2, err := testQueries.GetExpenditureById(context.Background(), arg)
+	require.NoError(t, err)
+	require.NotEmpty(t, expenditure2)
+	require.Equal(t, expenditure1.ID, expenditure2.ID)
+	require.Equal(t, expenditure1.Paisa, expenditure2.Paisa)
+	require.Equal(t, expenditure1.Categoryid, expenditure2.Categoryid)
+	require.WithinDuration(t, expenditure1.Createdat, expenditure2.Createdat, time.Second)
+	require.WithinDuration(t, expenditure1.Updatedat, expenditure2.Updatedat, time.Second)
+}

@@ -20,3 +20,7 @@ RETURNING *;
 DELETE FROM expenditure
 WHERE id = $1
 RETURNING *;
+-- name: GetExpenditureById :one
+SELECT *
+FROM expenditure
+WHERE id = $1;

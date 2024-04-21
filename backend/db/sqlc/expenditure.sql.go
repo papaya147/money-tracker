@@ -56,6 +56,25 @@ func (q *Queries) DeleteExpenditure(ctx context.Context, id uuid.UUID) (Expendit
 	return i, err
 }
 
+const getExpenditureById = `-- name: GetExpenditureById :one
+SELECT id, paisa, categoryid, createdat, updatedat
+FROM expenditure
+WHERE id = $1
+`
+
+func (q *Queries) GetExpenditureById(ctx context.Context, id uuid.UUID) (Expenditure, error) {
+	row := q.db.QueryRow(ctx, getExpenditureById, id)
+	var i Expenditure
+	err := row.Scan(
+		&i.ID,
+		&i.Paisa,
+		&i.Categoryid,
+		&i.Createdat,
+		&i.Updatedat,
+	)
+	return i, err
+}
+
 const getExpenditures = `-- name: GetExpenditures :many
 SELECT e.id, e.paisa, e.categoryid, e.createdat, e.updatedat,
     c.name AS categoryName

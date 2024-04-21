@@ -9,6 +9,11 @@ import (
 type mockStore struct {
 }
 
+// GetExpenditureById implements Store.
+func (m *mockStore) GetExpenditureById(ctx context.Context, id uuid.UUID) (Expenditure, error) {
+	return Expenditure{}, nil
+}
+
 // GetExpenditureCategoryById implements Store.
 func (m *mockStore) GetExpenditureCategoryById(ctx context.Context, id uuid.UUID) (Expenditurecategory, error) {
 	return Expenditurecategory{}, nil

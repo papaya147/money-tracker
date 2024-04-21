@@ -19,7 +19,6 @@ import (
 // @BasePath /api/v1
 func main() {
 	config := util.LoadEnv(".")
-	fmt.Println(*config)
 
 	conn := util.CreatePostgresPool(config.POSTGRES_DSN)
 	defer conn.Close()

@@ -37,7 +37,15 @@ func (c *Controller) update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if requestPayload.UnixMillis == 0 {
-		requestPayload.UnixMillis = time.Now().UnixMilli()
+		arg := uuid.MustParse(requestPayload.Id)
+		exp, err := c.store.GetExpenditureById(r.Context(), arg)
+		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				util.ErrorJson(w, util.ErrExpenditureNotFound)
+				return
+			}
+		}
+		requestPayload.UnixMillis = exp.Createdat.UnixMilli()
 	}
 
 	queryArg := db.UpdateExpenditureParams{
