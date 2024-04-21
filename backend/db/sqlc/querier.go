@@ -16,7 +16,8 @@ type Querier interface {
 	DeleteExpenditure(ctx context.Context, id uuid.UUID) (Expenditure, error)
 	DeleteExpenditureCategory(ctx context.Context, name string) (Expenditurecategory, error)
 	GetExpenditureCategories(ctx context.Context) ([]Expenditurecategory, error)
-	GetExpenditures(ctx context.Context, offset int32) ([]Expenditure, error)
+	GetExpenditureCategoryById(ctx context.Context, id uuid.UUID) (Expenditurecategory, error)
+	GetExpenditures(ctx context.Context, offset int32) ([]GetExpendituresRow, error)
 	UpdateExpenditure(ctx context.Context, arg UpdateExpenditureParams) (Expenditure, error)
 	UpdateExpenditureCategory(ctx context.Context, arg UpdateExpenditureCategoryParams) (Expenditurecategory, error)
 }

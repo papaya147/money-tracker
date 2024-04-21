@@ -40,7 +40,7 @@ func (c *Controller) get(w http.ResponseWriter, r *http.Request) {
 		out[i] = expenditureOutput{
 			Id:        exp.ID,
 			Paisa:     exp.Paisa,
-			Category:  exp.Categoryid,
+			Category:  exp.Categoryname,
 			CreatedAt: exp.Createdat.UnixMilli(),
 			UpdatedAt: exp.Updatedat.UnixMilli(),
 		}

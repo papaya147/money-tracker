@@ -13,12 +13,13 @@ import (
 type Expenditure struct {
 	ID         uuid.UUID `json:"id"`
 	Paisa      int32     `json:"paisa"`
-	Categoryid string    `json:"categoryid"`
+	Categoryid uuid.UUID `json:"categoryid"`
 	Createdat  time.Time `json:"createdat"`
 	Updatedat  time.Time `json:"updatedat"`
 }
 
 type Expenditurecategory struct {
+	ID        uuid.UUID `json:"id"`
 	Name      string    `json:"name"`
 	Createdat time.Time `json:"createdat"`
 	Updatedat time.Time `json:"updatedat"`

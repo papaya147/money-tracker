@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5"
+	db "github.com/papaya147/money-tracker/backend/db/sqlc"
 	"github.com/papaya147/money-tracker/backend/util"
 )
 
@@ -36,11 +37,16 @@ func (c *Controller) delete(w http.ResponseWriter, r *http.Request) {
 			util.ErrorJson(w, util.ErrEmptyResult)
 			return
 		}
+		if db.ErrorCode(err) == db.ForeignKeyViolation {
+			util.ErrorJson(w, util.ErrCategoryInUse)
+			return
+		}
 		util.ErrorJson(w, util.ErrDatabase)
 		return
 	}
 
 	util.WriteJson(w, http.StatusOK, categoryOutput{
+		Id:        category.ID,
 		Name:      category.Name,
 		CreatedAt: category.Createdat.UnixMilli(),
 		UpdatedAt: category.Updatedat.UnixMilli(),

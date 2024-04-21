@@ -32,9 +32,11 @@ test: tidy
 run: postgresup createdb migrateup test
 	trap 'make postgresdown' INT; go run main.go
 
-build: delete_old_image postgresup createdb migrateup test
+delete_old_image:
 	@echo "Deleting the old image..."
 	docker image rm papaya147/money-tracker-backend || true
+
+build: delete_old_image postgresup createdb migrateup test
 	@echo "Building the backend Docker image..."
 	env GOOS=linux CGO_ENABLED=0 go build -o server-app main.go
 	docker build -t papaya147/money-tracker-backend:latest .

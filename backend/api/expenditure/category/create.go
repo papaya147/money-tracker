@@ -35,6 +35,7 @@ func (c *Controller) create(w http.ResponseWriter, r *http.Request) {
 	}
 
 	util.WriteJson(w, http.StatusOK, categoryOutput{
+		Id:        category.ID,
 		Name:      category.Name,
 		CreatedAt: category.Createdat.UnixMilli(),
 		UpdatedAt: category.Updatedat.UnixMilli(),

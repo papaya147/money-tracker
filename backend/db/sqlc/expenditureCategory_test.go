@@ -16,6 +16,7 @@ func createRandomExpenditureCategory(t *testing.T) Expenditurecategory {
 	require.NoError(t, err)
 	require.NotEmpty(t, category)
 	require.Equal(t, arg, category.Name)
+	require.NotZero(t, category.ID)
 	require.NotZero(t, category.Createdat)
 	require.NotZero(t, category.Updatedat)
 
@@ -46,6 +47,7 @@ func TestUpdateCategory(t *testing.T) {
 	category2, err := testQueries.UpdateExpenditureCategory(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, category2)
+	require.Equal(t, category1.ID, category2.ID)
 	require.NotEqual(t, category1.Name, category2.Name)
 	require.WithinDuration(t, category1.Createdat, category2.Createdat, time.Second)
 }
@@ -58,6 +60,7 @@ func TestDeleteCategory(t *testing.T) {
 	category2, err := testQueries.DeleteExpenditureCategory(context.Background(), arg)
 	require.NoError(t, err)
 	require.NotEmpty(t, category2)
+	require.Equal(t, category1.ID, category2.ID)
 	require.Equal(t, category1.Name, category2.Name)
 	require.WithinDuration(t, category1.Createdat, category2.Createdat, time.Second)
 	require.WithinDuration(t, category1.Updatedat, category2.Updatedat, time.Second)
@@ -66,4 +69,18 @@ func TestDeleteCategory(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, categories)
 	require.NotContains(t, categories, category1)
+}
+
+func TestGetExpenditureCategoryById(t *testing.T) {
+	category1 := createRandomExpenditureCategory(t)
+
+	arg := category1.ID
+
+	category2, err := testQueries.GetExpenditureCategoryById(context.Background(), arg)
+	require.NoError(t, err)
+	require.NotEmpty(t, category2)
+	require.Equal(t, category1.ID, category2.ID)
+	require.Equal(t, category1.Name, category2.Name)
+	require.WithinDuration(t, category1.Createdat, category2.Createdat, time.Second)
+	require.WithinDuration(t, category1.Updatedat, category2.Updatedat, time.Second)
 }

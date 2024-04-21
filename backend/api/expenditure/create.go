@@ -2,6 +2,7 @@ package expenditure
 
 import (
 	"net/http"
+	"time"
 
 	db "github.com/papaya147/money-tracker/backend/db/sqlc"
 	"github.com/papaya147/money-tracker/backend/util"
@@ -23,9 +24,14 @@ func (c *Controller) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if requestPayload.UnixMillis == 0 {
+		requestPayload.UnixMillis = time.Now().UnixMilli()
+	}
+
 	queryArg := db.CreateExpenditureParams{
 		Paisa:      requestPayload.Paisa,
-		Categoryid: requestPayload.Category,
+		Categoryid: requestPayload.CategoryId,
+		Createdat:  time.UnixMilli(requestPayload.UnixMillis),
 	}
 
 	exp, err := c.store.CreateExpenditure(r.Context(), queryArg)
@@ -38,10 +44,17 @@ func (c *Controller) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	query2Arg := exp.Categoryid
+	category, err := c.store.GetExpenditureCategoryById(r.Context(), query2Arg)
+	if err != nil {
+		util.ErrorJson(w, util.ErrDatabase)
+		return
+	}
+
 	util.WriteJson(w, http.StatusOK, expenditureOutput{
 		Id:        exp.ID,
 		Paisa:     exp.Paisa,
-		Category:  exp.Categoryid,
+		Category:  category.Name,
 		CreatedAt: exp.Createdat.UnixMilli(),
 		UpdatedAt: exp.Updatedat.UnixMilli(),
 	})

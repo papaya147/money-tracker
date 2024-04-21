@@ -12,6 +12,7 @@ var (
 	ErrDatabase                      = errors.New("database error")
 	ErrUnableToDecodeJSON            = errors.New("unable to decode json, input format is wrong")
 	ErrInputJSONMustOnlyHaveOneValue = errors.New("input json must only have one value")
+	ErrCategoryInUse                 = errors.New("category in use")
 )
 
 var CustomErrorType = map[error]int{

@@ -43,11 +43,16 @@ func (c *Controller) update(w http.ResponseWriter, r *http.Request) {
 			util.ErrorJson(w, util.ErrEmptyResult)
 			return
 		}
+		if db.ErrorCode(err) == db.UniqueViolation {
+			util.ErrorJson(w, util.ErrDuplicateEntry)
+			return
+		}
 		util.ErrorJson(w, util.ErrDatabase)
 		return
 	}
 
 	util.WriteJson(w, http.StatusOK, categoryOutput{
+		Id:        category.ID,
 		Name:      category.Name,
 		CreatedAt: category.Createdat.UnixMilli(),
 		UpdatedAt: category.Updatedat.UnixMilli(),

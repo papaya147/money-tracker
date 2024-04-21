@@ -15,3 +15,7 @@ RETURNING *;
 DELETE FROM expenditureCategory
 WHERE name = $1
 RETURNING *;
+-- name: GetExpenditureCategoryById :one
+SELECT *
+FROM expenditureCategory
+WHERE id = $1;

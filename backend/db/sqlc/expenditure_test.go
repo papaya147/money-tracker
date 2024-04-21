@@ -14,7 +14,8 @@ func createRandomExpenditure(t *testing.T) Expenditure {
 
 	arg := CreateExpenditureParams{
 		Paisa:      util.RandomInt32(0, 10000),
-		Categoryid: category.Name,
+		Categoryid: category.ID,
+		Createdat:  time.Now(),
 	}
 
 	expenditure, err := testQueries.CreateExpenditure(context.Background(), arg)
@@ -49,8 +50,9 @@ func TestUpdateExpenditure(t *testing.T) {
 
 	arg := UpdateExpenditureParams{
 		Paisa:      util.RandomInt32(0, 10000),
-		Categoryid: category1.Name,
+		Categoryid: category1.ID,
 		ID:         expenditure1.ID,
+		Createdat:  expenditure1.Createdat,
 	}
 
 	expenditure2, err := testQueries.UpdateExpenditure(context.Background(), arg)

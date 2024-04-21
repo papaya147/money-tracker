@@ -36,6 +36,7 @@ func (c *Controller) createBulk(w http.ResponseWriter, r *http.Request) {
 		}
 
 		out[i] = categoryOutput{
+			Id:        category.ID,
 			Name:      category.Name,
 			CreatedAt: category.Createdat.UnixMilli(),
 			UpdatedAt: category.Updatedat.UnixMilli(),

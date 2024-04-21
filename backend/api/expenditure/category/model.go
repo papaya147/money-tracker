@@ -1,5 +1,7 @@
 package category
 
+import "github.com/google/uuid"
+
 type createCategoryInput struct {
 	Name string `json:"name" validate:"required,max=32" example:"electronics"`
 }
@@ -18,7 +20,8 @@ type deleteCategoryInput struct {
 }
 
 type categoryOutput struct {
-	Name      string `json:"category" example:"electronics"`
-	CreatedAt int64  `json:"created_at" example:"1709885754000"`
-	UpdatedAt int64  `json:"updated_at" example:"1709885754000"`
+	Id        uuid.UUID `json:"id" example:"6ba7b814-9dad-11d1-80b4-00c04fd430c8"`
+	Name      string    `json:"category" example:"electronics"`
+	CreatedAt int64     `json:"created_at" example:"1709885754000"`
+	UpdatedAt int64     `json:"updated_at" example:"1709885754000"`
 }

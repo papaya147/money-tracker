@@ -40,10 +40,17 @@ func (c *Controller) delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	query2Arg := exp.Categoryid
+	category, err := c.store.GetExpenditureCategoryById(r.Context(), query2Arg)
+	if err != nil {
+		util.ErrorJson(w, util.ErrDatabase)
+		return
+	}
+
 	util.WriteJson(w, http.StatusOK, expenditureOutput{
 		Id:        exp.ID,
 		Paisa:     exp.Paisa,
-		Category:  exp.Categoryid,
+		Category:  category.Name,
 		CreatedAt: exp.Createdat.UnixMilli(),
 		UpdatedAt: exp.Updatedat.UnixMilli(),
 	})

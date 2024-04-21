@@ -1,15 +1,16 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS expenditureCategory(
-    name TEXT NOT NULL UNIQUE PRIMARY KEY,
+    id UUID NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
     createdAt TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updatedAt TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 CREATE TABLE IF NOT EXISTS expenditure(
     id UUID NOT NULL DEFAULT uuid_generate_v4() PRIMARY KEY,
     paisa INT NOT NULL,
-    categoryId TEXT NOT NULL,
+    categoryId UUID NOT NULL,
     createdAt TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updatedAt TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 ALTER TABLE expenditure
-ADD FOREIGN KEY (categoryId) REFERENCES expenditureCategory (name);
+ADD FOREIGN KEY (categoryId) REFERENCES expenditureCategory (id);

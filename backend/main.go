@@ -24,8 +24,6 @@ func main() {
 	conn := util.CreatePostgresPool(config.POSTGRES_DSN)
 	defer conn.Close()
 
-	util.CreateDatabase(conn)
-
 	fmt.Print("attempting database migration...")
 	if err := runDbMigration(config); err != nil {
 		fmt.Println(" database migration failed with error:", err)

@@ -12,7 +12,7 @@ import (
 // @Summary      Get all expenditure categories
 // @Description  Get all expenditure categories, this API will return an error if none have been created.
 // @Tags         expenditure category
-// @Success      200  {object} []string
+// @Success      200  {object} []categoryOutput
 // @Failure      400  {object} util.ErrorModel
 // @Failure      500  {object} util.ErrorModel
 // @Router       /expenditure/category [get]
@@ -27,9 +27,14 @@ func (c *Controller) get(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	out := make([]string, len(categories))
+	out := make([]categoryOutput, len(categories))
 	for i, category := range categories {
-		out[i] = category.Name
+		out[i] = categoryOutput{
+			Id:        category.ID,
+			Name:      category.Name,
+			CreatedAt: category.Createdat.UnixMilli(),
+			UpdatedAt: category.Updatedat.UnixMilli(),
+		}
 	}
 
 	util.WriteJson(w, http.StatusOK, out)

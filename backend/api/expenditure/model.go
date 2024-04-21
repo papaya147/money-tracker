@@ -3,14 +3,16 @@ package expenditure
 import "github.com/google/uuid"
 
 type createExpenditureInput struct {
-	Paisa    int32  `json:"paisa" validate:"required" example:"561000"`
-	Category string `json:"category" validate:"required,max=32" example:"electronics"`
+	Paisa      int32     `json:"paisa" validate:"required,gt=0" example:"561000"`
+	CategoryId uuid.UUID `json:"category" validate:"required" example:"6ba7b814-9dad-11d1-80b4-00c04fd430c8"`
+	UnixMillis int64     `json:"millis" validate:"gte=0" example:"1709885754000"`
 }
 
 type updateExpenditureInput struct {
-	Id       string `json:"-" validate:"required,uuid"`
-	Paisa    int32  `json:"paisa" example:"561000"`
-	Category string `json:"category" example:"electronics"`
+	Id         string    `json:"-" validate:"required,uuid"`
+	Paisa      int32     `json:"paisa" example:"561000"`
+	CategoryId uuid.UUID `json:"category" validate:"required" example:"6ba7b814-9dad-11d1-80b4-00c04fd430c8"`
+	UnixMillis int64     `json:"millis" validate:"gte=0" example:"1709885754000"`
 }
 
 type deleteExpenditureInput struct {

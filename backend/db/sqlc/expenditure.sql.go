@@ -7,23 +7,25 @@ package db
 
 import (
 	"context"
+	"time"
 
 	"github.com/google/uuid"
 )
 
 const createExpenditure = `-- name: CreateExpenditure :one
-INSERT INTO expenditure (paisa, categoryId)
-VALUES ($1, $2)
+INSERT INTO expenditure (paisa, categoryId, createdAt)
+VALUES ($1, $2, $3)
 RETURNING id, paisa, categoryid, createdat, updatedat
 `
 
 type CreateExpenditureParams struct {
-	Paisa      int32  `json:"paisa"`
-	Categoryid string `json:"categoryid"`
+	Paisa      int32     `json:"paisa"`
+	Categoryid uuid.UUID `json:"categoryid"`
+	Createdat  time.Time `json:"createdat"`
 }
 
 func (q *Queries) CreateExpenditure(ctx context.Context, arg CreateExpenditureParams) (Expenditure, error) {
-	row := q.db.QueryRow(ctx, createExpenditure, arg.Paisa, arg.Categoryid)
+	row := q.db.QueryRow(ctx, createExpenditure, arg.Paisa, arg.Categoryid, arg.Createdat)
 	var i Expenditure
 	err := row.Scan(
 		&i.ID,
@@ -55,26 +57,38 @@ func (q *Queries) DeleteExpenditure(ctx context.Context, id uuid.UUID) (Expendit
 }
 
 const getExpenditures = `-- name: GetExpenditures :many
-SELECT id, paisa, categoryid, createdat, updatedat
-FROM expenditure
+SELECT e.id, e.paisa, e.categoryid, e.createdat, e.updatedat,
+    c.name AS categoryName
+FROM expenditure e
+    INNER JOIN expenditureCategory c ON e.categoryId = c.id
 LIMIT 20 OFFSET $1
 `
 
-func (q *Queries) GetExpenditures(ctx context.Context, offset int32) ([]Expenditure, error) {
+type GetExpendituresRow struct {
+	ID           uuid.UUID `json:"id"`
+	Paisa        int32     `json:"paisa"`
+	Categoryid   uuid.UUID `json:"categoryid"`
+	Createdat    time.Time `json:"createdat"`
+	Updatedat    time.Time `json:"updatedat"`
+	Categoryname string    `json:"categoryname"`
+}
+
+func (q *Queries) GetExpenditures(ctx context.Context, offset int32) ([]GetExpendituresRow, error) {
 	rows, err := q.db.Query(ctx, getExpenditures, offset)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []Expenditure{}
+	items := []GetExpendituresRow{}
 	for rows.Next() {
-		var i Expenditure
+		var i GetExpendituresRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.Paisa,
 			&i.Categoryid,
 			&i.Createdat,
 			&i.Updatedat,
+			&i.Categoryname,
 		); err != nil {
 			return nil, err
 		}
@@ -90,19 +104,26 @@ const updateExpenditure = `-- name: UpdateExpenditure :one
 UPDATE expenditure
 SET paisa = $1,
     categoryId = $2,
+    createdAt = $3,
     updatedAt = NOW()
-WHERE id = $3
+WHERE id = $4
 RETURNING id, paisa, categoryid, createdat, updatedat
 `
 
 type UpdateExpenditureParams struct {
 	Paisa      int32     `json:"paisa"`
-	Categoryid string    `json:"categoryid"`
+	Categoryid uuid.UUID `json:"categoryid"`
+	Createdat  time.Time `json:"createdat"`
 	ID         uuid.UUID `json:"id"`
 }
 
 func (q *Queries) UpdateExpenditure(ctx context.Context, arg UpdateExpenditureParams) (Expenditure, error) {
-	row := q.db.QueryRow(ctx, updateExpenditure, arg.Paisa, arg.Categoryid, arg.ID)
+	row := q.db.QueryRow(ctx, updateExpenditure,
+		arg.Paisa,
+		arg.Categoryid,
+		arg.Createdat,
+		arg.ID,
+	)
 	var i Expenditure
 	err := row.Scan(
 		&i.ID,

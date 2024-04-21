@@ -7,36 +7,48 @@ package db
 
 import (
 	"context"
+
+	"github.com/google/uuid"
 )
 
 const createExpenditureCategory = `-- name: CreateExpenditureCategory :one
 INSERT INTO expenditureCategory (name)
 VALUES ($1)
-RETURNING name, createdat, updatedat
+RETURNING id, name, createdat, updatedat
 `
 
 func (q *Queries) CreateExpenditureCategory(ctx context.Context, name string) (Expenditurecategory, error) {
 	row := q.db.QueryRow(ctx, createExpenditureCategory, name)
 	var i Expenditurecategory
-	err := row.Scan(&i.Name, &i.Createdat, &i.Updatedat)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Createdat,
+		&i.Updatedat,
+	)
 	return i, err
 }
 
 const deleteExpenditureCategory = `-- name: DeleteExpenditureCategory :one
 DELETE FROM expenditureCategory
 WHERE name = $1
-RETURNING name, createdat, updatedat
+RETURNING id, name, createdat, updatedat
 `
 
 func (q *Queries) DeleteExpenditureCategory(ctx context.Context, name string) (Expenditurecategory, error) {
 	row := q.db.QueryRow(ctx, deleteExpenditureCategory, name)
 	var i Expenditurecategory
-	err := row.Scan(&i.Name, &i.Createdat, &i.Updatedat)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Createdat,
+		&i.Updatedat,
+	)
 	return i, err
 }
 
 const getExpenditureCategories = `-- name: GetExpenditureCategories :many
-SELECT name, createdat, updatedat
+SELECT id, name, createdat, updatedat
 FROM expenditureCategory
 `
 
@@ -49,7 +61,12 @@ func (q *Queries) GetExpenditureCategories(ctx context.Context) ([]Expenditureca
 	items := []Expenditurecategory{}
 	for rows.Next() {
 		var i Expenditurecategory
-		if err := rows.Scan(&i.Name, &i.Createdat, &i.Updatedat); err != nil {
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Createdat,
+			&i.Updatedat,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -60,12 +77,30 @@ func (q *Queries) GetExpenditureCategories(ctx context.Context) ([]Expenditureca
 	return items, nil
 }
 
+const getExpenditureCategoryById = `-- name: GetExpenditureCategoryById :one
+SELECT id, name, createdat, updatedat
+FROM expenditureCategory
+WHERE id = $1
+`
+
+func (q *Queries) GetExpenditureCategoryById(ctx context.Context, id uuid.UUID) (Expenditurecategory, error) {
+	row := q.db.QueryRow(ctx, getExpenditureCategoryById, id)
+	var i Expenditurecategory
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Createdat,
+		&i.Updatedat,
+	)
+	return i, err
+}
+
 const updateExpenditureCategory = `-- name: UpdateExpenditureCategory :one
 UPDATE expenditureCategory
 SET name = $1,
     updatedAt = NOW()
 WHERE name = $2
-RETURNING name, createdat, updatedat
+RETURNING id, name, createdat, updatedat
 `
 
 type UpdateExpenditureCategoryParams struct {
@@ -76,6 +111,11 @@ type UpdateExpenditureCategoryParams struct {
 func (q *Queries) UpdateExpenditureCategory(ctx context.Context, arg UpdateExpenditureCategoryParams) (Expenditurecategory, error) {
 	row := q.db.QueryRow(ctx, updateExpenditureCategory, arg.Name, arg.Name_2)
 	var i Expenditurecategory
-	err := row.Scan(&i.Name, &i.Createdat, &i.Updatedat)
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Createdat,
+		&i.Updatedat,
+	)
 	return i, err
 }

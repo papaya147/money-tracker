@@ -12,7 +12,8 @@ import (
 func TestCreate(t *testing.T) {
 	postBody := map[string]interface{}{
 		"paisa":    util.RandomInt32(0, 100000),
-		"category": util.RandomString(10),
+		"category": util.RandomUuid(),
+		"millis":   util.RandomInt64(0, 1000000),
 	}
 	body, _ := json.Marshal(postBody)
 	test.TestCase(t, http.MethodPost, "/", testHandler.create, body, http.StatusOK)

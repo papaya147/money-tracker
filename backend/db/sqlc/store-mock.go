@@ -9,6 +9,16 @@ import (
 type mockStore struct {
 }
 
+// GetExpenditureCategoryById implements Store.
+func (m *mockStore) GetExpenditureCategoryById(ctx context.Context, id uuid.UUID) (Expenditurecategory, error) {
+	return Expenditurecategory{}, nil
+}
+
+// GetExpenditures implements Store.
+func (m *mockStore) GetExpenditures(ctx context.Context, offset int32) ([]GetExpendituresRow, error) {
+	return nil, nil
+}
+
 // CreateExpenditure implements Store.
 func (m *mockStore) CreateExpenditure(ctx context.Context, arg CreateExpenditureParams) (Expenditure, error) {
 	return Expenditure{}, nil
@@ -17,11 +27,6 @@ func (m *mockStore) CreateExpenditure(ctx context.Context, arg CreateExpenditure
 // DeleteExpenditure implements Store.
 func (m *mockStore) DeleteExpenditure(ctx context.Context, id uuid.UUID) (Expenditure, error) {
 	return Expenditure{}, nil
-}
-
-// GetExpenditures implements Store.
-func (m *mockStore) GetExpenditures(ctx context.Context, offset int32) ([]Expenditure, error) {
-	return nil, nil
 }
 
 // UpdateExpenditure implements Store.

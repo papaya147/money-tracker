@@ -3,6 +3,7 @@ package expenditure
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
@@ -35,9 +36,14 @@ func (c *Controller) update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if requestPayload.UnixMillis == 0 {
+		requestPayload.UnixMillis = time.Now().UnixMilli()
+	}
+
 	queryArg := db.UpdateExpenditureParams{
 		Paisa:      requestPayload.Paisa,
-		Categoryid: requestPayload.Category,
+		Categoryid: requestPayload.CategoryId,
+		Createdat:  time.UnixMilli(requestPayload.UnixMillis),
 		ID:         uuid.MustParse(requestPayload.Id),
 	}
 	exp, err := c.store.UpdateExpenditure(r.Context(), queryArg)
@@ -54,10 +60,17 @@ func (c *Controller) update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	query2Arg := exp.Categoryid
+	category, err := c.store.GetExpenditureCategoryById(r.Context(), query2Arg)
+	if err != nil {
+		util.ErrorJson(w, util.ErrDatabase)
+		return
+	}
+
 	util.WriteJson(w, http.StatusOK, expenditureOutput{
 		Id:        exp.ID,
 		Paisa:     exp.Paisa,
-		Category:  exp.Categoryid,
+		Category:  category.Name,
 		CreatedAt: exp.Createdat.UnixMilli(),
 		UpdatedAt: exp.Updatedat.UnixMilli(),
 	})

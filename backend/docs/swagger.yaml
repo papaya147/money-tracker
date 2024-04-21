@@ -8,6 +8,9 @@ definitions:
       created_at:
         example: 1709885754000
         type: integer
+      id:
+        example: 6ba7b814-9dad-11d1-80b4-00c04fd430c8
+        type: string
       updated_at:
         example: 1709885754000
         type: integer
@@ -46,9 +49,12 @@ definitions:
   expenditure.createExpenditureInput:
     properties:
       category:
-        example: electronics
-        maxLength: 32
+        example: 6ba7b814-9dad-11d1-80b4-00c04fd430c8
         type: string
+      millis:
+        example: 1709885754000
+        minimum: 0
+        type: integer
       paisa:
         example: 561000
         type: integer
@@ -77,11 +83,17 @@ definitions:
   expenditure.updateExpenditureInput:
     properties:
       category:
-        example: electronics
+        example: 6ba7b814-9dad-11d1-80b4-00c04fd430c8
         type: string
+      millis:
+        example: 1709885754000
+        minimum: 0
+        type: integer
       paisa:
         example: 561000
         type: integer
+    required:
+    - category
     type: object
   util.ErrorModel:
     properties:
@@ -219,7 +231,7 @@ paths:
           description: OK
           schema:
             items:
-              type: string
+              $ref: '#/definitions/category.categoryOutput'
             type: array
         "400":
           description: Bad Request

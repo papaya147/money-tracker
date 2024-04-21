@@ -107,7 +107,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "string"
+                                "$ref": "#/definitions/category.categoryOutput"
                             }
                         }
                     },
@@ -388,6 +388,10 @@ const docTemplate = `{
                     "type": "integer",
                     "example": 1709885754000
                 },
+                "id": {
+                    "type": "string",
+                    "example": "6ba7b814-9dad-11d1-80b4-00c04fd430c8"
+                },
                 "updated_at": {
                     "type": "integer",
                     "example": 1709885754000
@@ -448,8 +452,12 @@ const docTemplate = `{
             "properties": {
                 "category": {
                     "type": "string",
-                    "maxLength": 32,
-                    "example": "electronics"
+                    "example": "6ba7b814-9dad-11d1-80b4-00c04fd430c8"
+                },
+                "millis": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1709885754000
                 },
                 "paisa": {
                     "type": "integer",
@@ -484,10 +492,18 @@ const docTemplate = `{
         },
         "expenditure.updateExpenditureInput": {
             "type": "object",
+            "required": [
+                "category"
+            ],
             "properties": {
                 "category": {
                     "type": "string",
-                    "example": "electronics"
+                    "example": "6ba7b814-9dad-11d1-80b4-00c04fd430c8"
+                },
+                "millis": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "example": 1709885754000
                 },
                 "paisa": {
                     "type": "integer",
